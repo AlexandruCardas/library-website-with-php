@@ -1,0 +1,13 @@
+body {
+    padding-top: 100px;
+    min-height: 100vh;
+}
+
+.control-label:after {
+    content: " *";
+    color: red;
+}
+
+.min-height{
+    min-height: 50vh;
+}
