@@ -20,12 +20,39 @@ if ($_SESSION['search'] == TRUE) {
     $value_search_input = $_SESSION['search_for'];
 
     if ($value_search_category == "None") {
-        $total_pages_sql = "SELECT * FROM books WHERE BookTitle LIKE '%$value_search_input%' OR Author LIKE '%$value_search_input%'";
-        $sql = "SELECT ISBN, BookTitle, Author, Edition, Year, CategoryDetails, Reserved FROM books JOIN category c ON books.Category = c.CategoryID WHERE BookTitle LIKE '%$value_search_input%' OR Author LIKE '%$value_search_input%' ORDER BY Year ASC LIMIT $offset, $no_of_records_per_page ";
+        $total_pages_sql = <<<SQL
+SELECT *
+FROM books
+WHERE BookTitle LIKE '%$value_search_input%'
+   OR Author LIKE '%$value_search_input%'
+SQL;
+
+        $sql = <<<SQL
+SELECT ISBN, BookTitle, Author, Edition, Year, CategoryDetails, Reserved
+FROM books
+       JOIN category c ON books.Category = c.CategoryID
+WHERE BookTitle LIKE '%$value_search_input%'
+   OR Author LIKE '%$value_search_input%'
+ORDER BY Year ASC
+LIMIT $offset, $no_of_records_per_page 
+SQL;
 
     } else {
-        $total_pages_sql = "SELECT * FROM books JOIN category c ON books.Category = c.CategoryID WHERE CategoryDetails = '$value_search_category'";
-        $sql = "SELECT ISBN, BookTitle, Author, Edition, Year, CategoryDetails, Reserved FROM books JOIN category c ON books.Category = c.CategoryID WHERE CategoryDetails = '$value_search_category' ORDER BY Year ASC LIMIT $offset, $no_of_records_per_page ";
+        $total_pages_sql = <<<SQL
+SELECT *
+FROM books
+       JOIN category c ON books.Category = c.CategoryID
+WHERE CategoryDetails = '$value_search_category'
+SQL;
+
+        $sql = <<<SQL
+SELECT ISBN, BookTitle, Author, Edition, Year, CategoryDetails, Reserved
+FROM books
+       JOIN category c ON books.Category = c.CategoryID
+WHERE CategoryDetails = '$value_search_category'
+ORDER BY Year ASC
+LIMIT $offset, $no_of_records_per_page 
+SQL;
     }
     $action = "Reserve";
 
@@ -82,7 +109,7 @@ if (!$res_data) {
                             echo htmlentities($row[$i]);
                             echo("</td>");
                             continue;
-                        }elseif ($row[6] === 'Y' && $_SESSION['search'] == TRUE){
+                        } elseif ($row[6] === 'Y' && $_SESSION['search'] == TRUE) {
                             echo "<td class=\"table-secondary\">";
                             echo htmlentities($row[$i]);
                             echo("</td>");
